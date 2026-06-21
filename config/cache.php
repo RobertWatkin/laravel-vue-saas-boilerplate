@@ -104,4 +104,19 @@ return [
 
     'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache_'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Serializable Classes
+    |--------------------------------------------------------------------------
+    |
+    | When serializable_classes is enabled, only the classes listed here (or
+    | those implementing Illuminate\Contracts\Support\Responsable) may be
+    | unserialized from the cache. This helps prevent gadget chain attacks.
+    |
+    | By default we keep it disabled for broad compatibility. Explicitly
+    | list classes if you cache model instances or custom objects.
+    |
+    */
+    'serializable_classes' => false,
+
 ];

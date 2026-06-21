@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\Subscribed;
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\StripeController;
+use App\Http\Middleware\Subscribed;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -35,10 +35,7 @@ Route::middleware([
         Route::get('subscription/{price_id}', [StripeController::class, 'checkout'])->name('subscription');
     });
 
-
-
-
-    // Only subscribed users can access here 
+    // Only subscribed users can access here
     Route::middleware([Subscribed::class])->group(function () {
         Route::get('/dashboard', function () {
             return Inertia::render('Dashboard');

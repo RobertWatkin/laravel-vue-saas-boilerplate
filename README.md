@@ -2,25 +2,27 @@
 
 Hi, I have created this boilerplate for Laravel and Vue to increase the speed in which I can develop SaaS products as a solo developer. I thought this could be useful to others who use the Laravel and Vue stack (Inertia) and want to create SaaS products without having to implement the same features everytime. This boilerplate aims to cover the basic feature set and UI required to start developing a SaaS product meaning you can focus on the important parts of your SaaS idea. Any and all feedback is appreciated :)
 
-This boilerplate is based of the Jetstream starter kit so you get all the benefits provided such as a profile screen, session management, 2FA, etc.
+This boilerplate is based on the Jetstream starter kit so you get all the benefits provided such as a profile screen, session management, 2FA, etc.
+
+**Refreshed 2026:** Updated to Laravel 13, Tailwind CSS 4 + DaisyUI 5, modern Vite setup, PHP 8.3+, and other dependencies.
 
 ![image](https://github.com/user-attachments/assets/b61e2b20-5ec7-4e21-bd14-2823a21e515a)
 
 
 ### Technologies Used
-- Laravel
-- Vue JS
-- Inertia JS
-- Daisy UI (Themes)
-- Stripe
+- Laravel 13
+- Vue 3 + Inertia 2
+- Tailwind CSS 4 + DaisyUI 5 (Themes)
+- Stripe (Laravel Cashier)
 - Mailgun
+- Ziggy
 
-Anything within this boilerplate including technologies chosen are of course intended to modified to fit your SaaS idea while acting a starting point to hopefully save some early development time.
+Anything within this boilerplate including technologies chosen are of course intended to be modified to fit your SaaS idea while acting as a starting point to hopefully save some early development time.
 
 ## Getting Started
 
-I work with laravel locally with WSL 2 (Windows Subsystem for Linux) running Ubuntu therefore the following instructions will be based on that development setup. You should still be able to use the boilerplate with a different development setup but certain instructions will not apply. I use Laravel Sail to run my local development server. See a link to Laravel Sail documentation below:
-[Laravel Sail Docs](https://laravel.com/docs/11.x/sail)
+I work with Laravel locally with WSL 2 (Windows Subsystem for Linux) running Ubuntu therefore the following instructions will be based on that development setup. You should still be able to use the boilerplate with a different development setup but certain instructions will not apply. I use Laravel Sail to run my local development server. See a link to Laravel Sail documentation below:
+[Laravel Sail Docs](https://laravel.com/docs/13.x/sail)
 
 1. Clone the github repository
 Navigate to the Github repository and click on the "code" dropdown to see clone options. To clone with SSH, within WSL run the following on the command
@@ -41,7 +43,7 @@ docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
-    laravelsail/php83-composer:latest \
+    laravelsail/php84-composer:latest \
     composer install --ignore-platform-reqs
 ``` 
 
@@ -54,6 +56,8 @@ sail up -d
 ```
 sail composer update && sail composer install && sail npm install && sail artisan key:generate
 ```
+
+> Note: After major version bumps (Laravel 13 / Tailwind 4), you may need to run `sail build --no-cache` the first time.
 
 6. Database Migation
 ```
@@ -90,34 +94,29 @@ Welcome.vue is the landing page for the application. The landing page is made up
 ![saas-boilerplate](https://github.com/user-attachments/assets/53c93b58-46d0-42c7-93de-587a8a87ee97)
 
 To create your own color scheme I recommend the use of www.realtimecolors.com/
-Create a colour scheme you like and then export the colour scheme with the custom export code below
+Create a colour scheme you like and then export the colour scheme with the custom export code below (Tailwind 4 + DaisyUI 5 style):
 ```
-daisyui: {
-    themes: [
-      {
-        realtimeColorsTheme: {
-          "primary": "${primary.hex}",
-          "primary-content": "${primaryFg.hex}",
-          "secondary": "${secondary.hex}",
-          "secondary-content": "${secondaryFg.hex}",
-          "accent": "${accent.hex}",
-          "accent-content": "${accentFg.hex}",
-          "neutral": "${bg.hex.15}",
-          "base-100": "${bg.hex}",
-        },
-      },
-    ],
-  },
+@plugin "daisyui/theme" {
+  name: "realtimeColorsTheme";
+  default: true;
+  --color-primary: "${primary.hex}";
+  --color-primary-content: "${primaryFg.hex}";
+  --color-secondary: "${secondary.hex}";
+  --color-secondary-content: "${secondaryFg.hex}";
+  --color-accent: "${accent.hex}";
+  --color-accent-content: "${accentFg.hex}";
+  --color-neutral: "${bg.hex.15}";
+  --color-base-100: "${bg.hex}";
+}
 ```
 
-You can then paste the exported theme into your tailwind.config.js file as seen below:
-![image](https://github.com/user-attachments/assets/bc816c50-183e-4e59-b362-d3a7facbac3d)
+Paste the theme block into `resources/css/app.css`.
 
 #### DaisyUI Themes
 See the full documentation for Daisy UI below:
-https://daisyui.com/
+https://daisyui.com/docs/v5/
 
-If you don't want to create your own color schemes, it is super simple to get started with themes within the boilerplate. Daisy UI themes are based on Tailwind CSS config. Within tailwind.config.js you will find all of the DaisyUI themes. Simply uncomment the one you want to use and comment all others. The file also contains some commented out examples of completelly custom colour themes should you decide you want more optionality.
+DaisyUI 5 + Tailwind 4 is configured primarily via CSS in this boilerplate. Predefined DaisyUI themes can be activated by updating the `@plugin "daisyui"` configuration block in `resources/css/app.css`.
 
 ![image](https://github.com/RobertWatkin/laravel-vue-saas-boilerplate/assets/55134916/7677810b-e79a-4265-b9d8-e18a9351a1a4)
 
@@ -146,12 +145,12 @@ MAIL_FROM_ADDRESS="saas-boilerplate@example.com"
 
 Once your variables are set you should receive a verification email when registering a new account in the application. You can also use Mailgun to send mail throughout your application. 
 Refer to the Laravel documentation on mail for more information:
-https://laravel.com/docs/11.x/mail
+https://laravel.com/docs/13.x/mail
 
 ## Stripe Setup (Laravel Cashier)
 
-Laravel Cashier is the official method for implementing Stripe into a Laravel application. See the full documentation for Laraval Cashier below:
-https://laravel.com/docs/11.x/upgrade#cashier-stripe
+Laravel Cashier is the official method for implementing Stripe into a Laravel application. See the full documentation for Laravel Cashier below:
+https://laravel.com/docs/billing
 
 Laravel Cashier allows the implementation of a pricing page and subscription checkout flow as expected from a SaaS product. The pricing options can be toggled between Monthly or Yearly billing. Once again this is all customisable so, if for example you only have monthly billing for your application, feel free to remove or add anything as you see fit.
 ![image](https://github.com/RobertWatkin/laravel-vue-saas-boilerplate/assets/55134916/7dc8df65-a137-4d05-882f-81e2ddab4422)

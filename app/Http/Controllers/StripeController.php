@@ -10,7 +10,7 @@ class StripeController extends Controller
     public function checkout(Request $request, string $price_id)
     {
         // handle when it doesn't exist
-        if (!$price_id) {
+        if (! $price_id) {
             return redirect()->route('dashboard');
         }
         // handle when the user is already subscribed

@@ -38,8 +38,8 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'appName' => config('app.name'),
             // share subscription details
-            'user' => fn() => $request->user() ? $request->user()->only('id', 'name', 'email') : null,
-            'auth.user.subscription' => fn() => $request->user()?->subscribed() ? $request->user()->subscription('default') : null,
+            'user' => fn () => $request->user() ? $request->user()->only('id', 'name', 'email') : null,
+            'auth.user.subscription' => fn () => $request->user()?->subscribed() ? $request->user()->subscription('default') : null,
             // all subscription options
             'subscriptionOptions' => collect(config('subscription.tiers'))
                 ->map(function ($tier) {

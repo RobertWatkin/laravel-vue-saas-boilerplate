@@ -1,6 +1,25 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "@tailwindcss/typography";
+
+@plugin "daisyui/theme" {
+  name: "realtimeColorsTheme";
+  default: true;
+  --color-primary: #2957de;
+  --color-primary-content: #eff3fc;
+  --color-secondary: #ed8ed2;
+  --color-secondary-content: #02050e;
+  --color-accent: #e45373;
+  --color-accent-content: #02050e;
+  --color-neutral: #0c1c40;
+  --color-base-100: #eff3fc;
+}
+
+/* Custom shades used in components (approximations using opacity on primary/secondary) */
+@theme inline {
+  --color-primary-20: color-mix(in oklab, var(--color-primary) 20%, transparent);
+  --color-secondary-20: color-mix(in oklab, var(--color-secondary) 20%, transparent);
+}
 
 [x-cloak] {
     display: none;
